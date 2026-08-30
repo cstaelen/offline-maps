@@ -23,32 +23,6 @@ docker compose up -d
 - `graphhopper-maps` — web frontend (custom build, see below)
 - `valkey` — config sync between services
 
-### `graphhopper` (docker/graphhopper-highmem)
-
-The official `codingkiwi/mapstack-graphhopper` image hardcodes a 4 GB heap for
-the import step, which runs out of memory on country-sized OSM extracts
-(e.g. France). This build patches the heap to 12 GB (import) / 6 GB (server).
-Only needed the first time data is imported — switch back to
-`image: codingkiwi/mapstack-graphhopper:1` once the graph cache exists.
-
-### `graphhopper-maps` (docker/graphhopper-maps)
-
-[GraphHopper Maps](https://github.com/graphhopper/graphhopper-maps) has no
-official Docker image and is built from source here, patched to talk to our
-self-hosted services instead of graphhopper.com/cloud tile providers:
-
-- `MapOptionsStore.ts` — replaces every tile source with a single "Local"
-  vector style (`local-style.json`, generated with `@versatiles/style`)
-- `Api.ts` — the app is wired for the GraphHopper Directions API; this
-  translates requests/responses to Photon's native format (param names,
-  GeoJSON response shape)
-- `config-local.js` — API URLs resolved at runtime from `window.location`,
-  and `request.details` trimmed to the encoded_values actually enabled on
-  this GraphHopper instance (see `/routing/info`)
-- `nginx.conf` — serves the built app and proxies `/routing`, `/geocode`,
-  `/tiles`, `/sprites`, `/fonts` to the gateway; also aliases
-  `/geocode/geocode` (hardcoded in the app) to Photon's `/geocode/api`
-
 ## Endpoints
 
 Everything is exposed through the gateway on port `9988`:
@@ -63,3 +37,16 @@ Fully offline once a country's data is downloaded.
 
 - Web: http://localhost:8888 (`graphhopper-maps`, built locally from source with a patched tile layer pointing at the local VersaTiles/GraphHopper/Photon services — no cloud dependency)
 - Android: https://f-droid.org/de/packages/com.graphhopper.maps/
+
+## Elevation
+
+Not enabled yet — `graph.elevation.provider: srtm` is set in
+`docker/graphhopper-highmem/config.yml` (cache pointed at the persistent
+`graphhopper_data` volume) but requires a full graph re-import to take
+effect, which downloads SRTM tiles on the fly (needs network access during
+import) and takes longer / uses more disk. To enable it:
+
+1. `docker compose down`
+2. `rm -rf var/graphhopper/cache` (forces a re-import)
+3. `docker compose up -d`
+4. Re-trigger the country deployment from http://localhost:8080/admin
