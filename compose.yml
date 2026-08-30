@@ -1,0 +1,35 @@
+services:
+  mapstack:
+    image: codingkiwi/mapstack:1
+    ports:
+      - 9988:80
+      - 8080:8080
+
+  photon:
+    image: codingkiwi/mapstack-photon:1
+    volumes:
+      - ./var/photon:/app/photon_data
+    environment:
+      # the "-latest" pointer is a broken symlink on GraphHopper's server (404),
+      # pinned to the last known-good dated snapshot instead
+      COUNTRY_DOWNLOAD_URL: "https://download1.graphhopper.com/public/experimental/extracts/by-country-code/<COUNTRY>/photon-db-<COUNTRY>-250720.tar.bz2"
+
+  versatiles:
+    image: codingkiwi/mapstack-versatiles:1
+    volumes:
+      - ./var/versatiles:/app/versatiles_data
+
+  graphhopper:
+    # use "build:" instead of "image:" to increase memory heap
+    # image: codingkiwi/mapstack-graphhopper:1
+    build: ./docker/graphhopper-highmem
+    volumes:
+      - ./var/graphhopper:/app/graphhopper_data
+
+  graphhopper-maps:
+    build: ./docker/graphhopper-maps
+    ports:
+      - 8888:80
+
+  valkey:
+    image: valkey/valkey:9
