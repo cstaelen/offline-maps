@@ -1,8 +1,10 @@
-# MAPSTACK
+# OFFLINE MAPS - Work in progress
 
-Self-hosted routing, geocoding, and map tiles stack ([Mapstack](https://github.com/Coding-Kiwi/mapstack): GraphHopper + Photon + VersaTiles).
+Self-hosted routing, geocoding, and map tiles stack ([Mapstack](https://github.com/Coding-Kiwi/mapstack): GraphHopper + Photon + VersaTiles) with custom UI based on [GraphHopper-maps](https://github.com/graphhopper/graphhopper-maps).
 
 ## Install
+
+Download or clone the repo then:
 
 ```bash
 docker compose up -d
@@ -12,15 +14,16 @@ docker compose up -d
 
 1. Open http://localhost:8080/admin
 2. Pick a country (e.g. France) and start the data download
-3. Services restart automatically once ready
+3. You can follow logs using `docker compose logs` while processing
+4. Services restart automatically once ready
 
 ## Containers
 
 - `mapstack` — gateway + admin dashboard
 - `photon` — geocoding
 - `versatiles` — map tiles
-- `graphhopper` — routing (custom build, see below)
-- `graphhopper-maps` — web frontend (custom build, see below)
+- `graphhopper` — routing (custom build)
+- `graphhopper-maps` — web UI (custom build)
 - `valkey` — config sync between services
 
 ## Endpoints
@@ -35,17 +38,12 @@ Fully offline once a country's data is downloaded.
 
 ## UI
 
-- Web: http://localhost:8888 (`graphhopper-maps`, built locally from source with a patched tile layer pointing at the local VersaTiles/GraphHopper/Photon services — no cloud dependency)
-- Android: https://f-droid.org/de/packages/com.graphhopper.maps/
+- Web: http://localhost:8888 
 
-## Elevation
+## Maps config (elevation, ...)
 
-Not enabled yet — `graph.elevation.provider: srtm` is set in
-`docker/graphhopper-highmem/config.yml` (cache pointed at the persistent
-`graphhopper_data` volume) but requires a full graph re-import to take
-effect, which downloads SRTM tiles on the fly (needs network access during
-import) and takes longer / uses more disk. To enable it:
-
+File: `docker/graphhopper-highmem/config.yml` 
+Restart and remove cache :
 1. `docker compose down`
 2. `rm -rf var/graphhopper/cache` (forces a re-import)
 3. `docker compose up -d`

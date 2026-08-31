@@ -9,6 +9,8 @@ COPY config-local.js ./config-local.js
 COPY config.js ./config.js
 COPY MapOptionsStore.ts ./src/stores/MapOptionsStore.ts
 COPY Api.ts ./src/api/Api.ts
+COPY UsePathsLayer.tsx ./src/layers/UsePathsLayer.tsx
+COPY UseQueryPointsLayer.tsx ./src/layers/UseQueryPointsLayer.tsx
 
 RUN npm ci
 RUN npm run build
@@ -17,4 +19,7 @@ FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY local-style.json /usr/share/nginx/html/local-style.json
+COPY local-style-dark.json /usr/share/nginx/html/local-style-dark.json
+COPY dark-theme.css /usr/share/nginx/html/dark-theme.css
+COPY fonts/ /usr/share/nginx/html/fonts/ui/
 COPY nginx.conf /etc/nginx/conf.d/default.conf

@@ -1,0 +1,625 @@
+/* Monokai dark theme: warm near-black background, glassy panels, fuchsia/green/cyan accents */
+
+/* Space Grotesk, self-hosted (no CDN — this stack must work fully offline) */
+@font-face {
+    font-family: 'Space Grotesk';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/ui/SpaceGrotesk-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Space Grotesk';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/ui/SpaceGrotesk-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Space Grotesk';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/fonts/ui/SpaceGrotesk-SemiBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Space Grotesk';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/ui/SpaceGrotesk-Bold.ttf') format('truetype');
+}
+
+:root {
+    --gh-bg: #1b1c17;
+    --gh-panel: rgba(39, 40, 34, 0.78);
+    --gh-panel-solid: #272822;
+    --gh-panel-border: rgba(249, 38, 114, 0.22);
+    --gh-panel-glow: rgba(249, 38, 114, 0.08);
+    --gh-text: #f8f8f2;
+    --gh-text-dim: #a5a599;
+    --gh-text-faint: #75715e;
+    --gh-accent: #f92672;
+    --gh-accent-green: #a6e22e;
+    --gh-accent-soft: rgba(249, 38, 114, 0.16);
+    --gh-danger: #f92672;
+    --gh-hairline: rgba(249, 38, 114, 0.14);
+}
+
+body {
+    background: var(--gh-bg) !important;
+    font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* app shell */
+.src-App-module__appWrapper {
+    background: var(--gh-bg) !important;
+}
+
+.src-App-module__sidebarContent,
+.src-sidebar-MobileSidebar-module__background,
+.src-App-module__sidebarWhenClosed,
+.src-App-module__smallScreenFooter {
+    background: var(--gh-panel) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--gh-panel-border) !important;
+    box-shadow:
+        0 0 0 1px rgba(249, 38, 114, 0.06),
+        0 8px 32px rgba(0, 0, 0, 0.55),
+        0 0 24px var(--gh-panel-glow) !important;
+    color: var(--gh-text) !important;
+}
+
+.src-App-module__onMapRightSide > div {
+    background: var(--gh-panel) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--gh-panel-border) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 16px var(--gh-panel-glow) !important;
+}
+
+.src-App-module__sidebarCloseButton {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-App-module__sidebarCloseButton:hover {
+    color: var(--gh-accent) !important;
+}
+
+.src-App-module__sidebarOpenButton svg {
+    fill: var(--gh-text-dim) !important;
+}
+
+.src-App-module__sidebarOpenButton:hover svg {
+    fill: var(--gh-accent) !important;
+}
+
+.src-App-module__handleBar {
+    background-color: var(--gh-text-faint) !important;
+}
+
+.src-App-module__collapsedFooterSummary {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-App-module__collapsedFooterDistance {
+    color: var(--gh-text-faint) !important;
+}
+
+.src-App-module__smallScreenFooterHandle,
+.src-App-module__collapsedFooter {
+    border-top-color: var(--gh-hairline);
+}
+
+.src-App-module__elevationReopenButton {
+    background: var(--gh-panel-solid) !important;
+    border-color: var(--gh-panel-border) !important;
+    color: var(--gh-text-dim) !important;
+}
+
+.src-App-module__elevationReopenButton:hover {
+    background: rgba(249, 38, 114, 0.1) !important;
+    color: var(--gh-accent) !important;
+}
+
+.src-App-module__inclineButton svg polyline,
+.src-App-module__inclineButton svg circle {
+    stroke: var(--gh-text-dim) !important;
+    fill: var(--gh-text-dim) !important;
+}
+
+.src-App-module__inclineButtonActive {
+    background-color: rgba(166, 226, 46, 0.15) !important;
+    border: 1px solid var(--gh-accent-green) !important;
+}
+
+/* buttons */
+.src-PlainButton-module__button {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-PlainButton-module__button:hover {
+    color: var(--gh-accent) !important;
+}
+
+.src-PlainButton-module__button:active {
+    color: var(--gh-text-faint) !important;
+}
+
+/* routing profile carousel */
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__chevron svg path {
+    fill: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__chevron:disabled svg path {
+    fill: var(--gh-text-faint) !important;
+}
+
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__profileBtn {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__selectedProfile {
+    background-color: var(--gh-accent-soft) !important;
+    color: var(--gh-accent) !important;
+}
+
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__cmBox svg path,
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__enabledCMBox svg path {
+    fill: var(--gh-text-faint) !important;
+    stroke: var(--gh-text-faint) !important;
+}
+
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__cmBox:hover svg path,
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__enabledCMBox:hover svg path {
+    fill: var(--gh-accent) !important;
+    stroke: var(--gh-accent) !important;
+}
+
+.src-sidebar-search-routingProfiles-RoutingProfiles-module__asIndicator {
+    stroke: var(--gh-accent) !important;
+}
+
+/* address search inputs */
+.src-sidebar-search-AddressInput-module__inputContainer {
+    background: rgba(5, 10, 22, 0.6) !important;
+    border: 1px solid var(--gh-panel-border) !important;
+}
+
+.src-sidebar-search-AddressInput-module__inputContainer:focus-within {
+    border-color: var(--gh-accent) !important;
+    box-shadow: 0 0 0 1px var(--gh-accent), 0 0 12px var(--gh-accent-soft) !important;
+}
+
+.src-sidebar-search-AddressInput-module__input {
+    background: transparent !important;
+    color: var(--gh-text) !important;
+}
+
+.src-sidebar-search-AddressInput-module__input::placeholder {
+    color: var(--gh-text-faint) !important;
+}
+
+.src-sidebar-search-AddressInput-module__btnClose,
+.src-sidebar-search-AddressInput-module__btnInputClear,
+.src-sidebar-search-AddressInput-module__btnCurrentLocation {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-search-AddressInput-module__fullscreen {
+    background-color: var(--gh-bg) !important;
+}
+
+.src-sidebar-search-AddressInput-module__topBorder,
+.src-sidebar-search-AddressInput-module__bottomBorder {
+    border-color: var(--gh-text-faint) !important;
+}
+
+.src-sidebar-search-Search-module__addSearchBox,
+.src-sidebar-search-Search-module__removeSearchBox {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-search-Search-module__addSearchBox svg {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-search-Search-module__addSearchBox:hover path,
+.src-sidebar-search-Search-module__infoButton:hover path {
+    fill: var(--gh-accent) !important;
+}
+
+.src-sidebar-search-Search-module__infoButton svg {
+    fill: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-search-Search-module__settingsButton,
+.src-sidebar-search-Search-module__settingsButton:hover {
+    color: var(--gh-accent) !important;
+}
+
+.src-sidebar-search-Search-module__markerTarget > svg {
+    fill: var(--gh-text-dim) !important;
+}
+
+/* autocomplete dropdown */
+.src-sidebar-search-AddressInputAutocomplete-module__highlightedItem,
+.src-sidebar-search-AddressInputAutocomplete-module__selectableItem:hover {
+    background-color: rgba(249, 38, 114, 0.08) !important;
+}
+
+.src-sidebar-search-AddressInputAutocomplete-module__selectableItem:active {
+    background-color: rgba(249, 38, 114, 0.16) !important;
+}
+
+.src-sidebar-search-AddressInputAutocomplete-module__selectableItem {
+    color: var(--gh-text) !important;
+}
+
+.src-sidebar-search-AddressInputAutocomplete-module__secondaryText,
+.src-sidebar-search-AddressInputAutocomplete-module__recentIcon,
+.src-sidebar-search-AddressInputAutocomplete-module__removeIcon {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-search-AddressInputAutocomplete-module__removeIcon:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: var(--gh-text) !important;
+}
+
+.src-sidebar-search-AddressInputAutocomplete-module__autocompleteItem:not(:last-child) {
+    border-bottom: 1px solid var(--gh-hairline) !important;
+}
+
+/* routing results */
+.src-sidebar-RoutingResult-module__resultRow {
+    border-bottom: 1px solid var(--gh-hairline) !important;
+}
+
+.src-sidebar-RoutingResult-module__resultSummary,
+.src-sidebar-RoutingResult-module__resultSelectableArea {
+    border-left-color: transparent;
+}
+
+.src-sidebar-RoutingResult-module__resultSelectableArea:hover .src-sidebar-RoutingResult-module__resultSummary {
+    border-left-color: var(--gh-accent-soft);
+}
+
+.src-sidebar-RoutingResult-module__selectedResultSummary {
+    border-left-color: var(--gh-accent) !important;
+    background: linear-gradient(90deg, var(--gh-accent-soft), transparent 60%) !important;
+}
+
+.src-sidebar-RoutingResult-module__resultMainText {
+    color: var(--gh-text) !important;
+}
+
+.src-sidebar-RoutingResult-module__resultSecondaryText,
+.src-sidebar-RoutingResult-module__exportButton div,
+.src-sidebar-RoutingResult-module__elevationHint,
+.src-sidebar-RoutingResult-module__resultTertiaryText,
+.src-sidebar-RoutingResult-module__detailsButton div,
+.src-sidebar-RoutingResult-module__detailsButtonExpanded div,
+.src-sidebar-RoutingResult-module__instructionsToggle,
+.src-sidebar-RoutingResult-module__routingResultRoadData {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-RoutingResult-module__detailsButton svg path,
+.src-sidebar-RoutingResult-module__exportButton svg path {
+    fill: var(--gh-text-dim) !important;
+    stroke: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-RoutingResult-module__exportButton:hover div,
+.src-sidebar-RoutingResult-module__detailsButton:hover div,
+.src-sidebar-RoutingResult-module__detailsButtonExpanded:hover div,
+.src-sidebar-RoutingResult-module__instructionsToggle:hover {
+    color: var(--gh-accent) !important;
+}
+
+.src-sidebar-RoutingResult-module__detailsButton:hover svg path,
+.src-sidebar-RoutingResult-module__exportButton:hover svg path,
+.src-sidebar-RoutingResult-module__detailsButtonExpanded:hover svg path {
+    fill: var(--gh-accent) !important;
+}
+
+.src-sidebar-RoutingResult-module__placeholderMain {
+    background-color: var(--gh-panel-solid) !important;
+}
+
+.src-sidebar-RoutingResult-module__routeHints div {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-RoutingResult-module__routeHintButton,
+.src-sidebar-RoutingResult-module__routeHintButton span {
+    color: var(--gh-text-faint) !important;
+}
+
+.src-sidebar-RoutingResult-module__selectedRouteHintButton,
+.src-sidebar-RoutingResult-module__selectedRouteHintButton span {
+    color: var(--gh-accent-green) !important;
+    border-color: var(--gh-accent-green) !important;
+}
+
+.src-sidebar-RoutingResult-module__routeHintButton:hover {
+    border-color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-RoutingResult-module__elevationSeparator {
+    border-top-color: var(--gh-hairline);
+}
+
+/* route stats */
+.src-sidebar-RouteStats-module__routeStats,
+.src-sidebar-RouteStats-module__statDetails {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-RouteStats-module__label,
+.src-sidebar-RouteStats-module__statSummary {
+    color: var(--gh-text) !important;
+}
+
+.src-sidebar-RouteStats-module__statSummary {
+    border-bottom-color: var(--gh-hairline);
+}
+
+.src-sidebar-RouteStats-module__statArrow,
+.src-sidebar-RouteStats-module__moreDots {
+    color: var(--gh-text-faint) !important;
+}
+
+.src-sidebar-RouteStats-module__statClickable:hover {
+    color: var(--gh-accent) !important;
+}
+
+/* turn-by-turn instructions */
+.src-sidebar-instructions-Instructions-module__distance {
+    color: var(--gh-text-dim) !important;
+    border-bottom-color: var(--gh-hairline);
+}
+
+.src-sidebar-instructions-Instructions-module__instruction {
+    color: var(--gh-text) !important;
+}
+
+/* settings box */
+.src-sidebar-SettingsBox-module__parent {
+    border-top-color: var(--gh-hairline);
+    border-bottom-color: var(--gh-hairline);
+}
+
+.src-sidebar-SettingsBox-module__title,
+.src-sidebar-SettingsBox-module__infoLine,
+.src-sidebar-SettingsBox-module__settingsTable,
+.src-sidebar-SettingsBox-module__groupProfileOptionsHeader,
+.src-sidebar-SettingsBox-module__infoLine a {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-SettingsBox-module__infoLine a:hover {
+    color: var(--gh-accent) !important;
+}
+
+/* error toast */
+.src-sidebar-ErrorMessage-module__errorMessageContainer {
+    background-color: rgba(249, 38, 114, 0.15) !important;
+    border: 1px solid var(--gh-danger) !important;
+    color: var(--gh-text) !important;
+}
+
+.src-sidebar-ErrorMessage-module__errorMessageCloseBtn {
+    color: var(--gh-text) !important;
+}
+
+/* powered by footer */
+.src-sidebar-PoweredBy-module__poweredByContainer {
+    color: var(--gh-text-faint) !important;
+}
+
+/* map floating controls */
+.src-map-MapOptions-module__layerButton svg {
+    color: var(--gh-text-dim) !important;
+}
+
+/* layer picker dropdown (e.g. "Local" / "Local Dark") — no text color set upstream, defaults to black */
+.src-map-MapOptions-module__options,
+.src-map-MapOptions-module__option {
+    color: var(--gh-text) !important;
+}
+
+.src-map-Map-module__customAttribution {
+    background-color: var(--gh-panel) !important;
+    backdrop-filter: blur(8px) !important;
+}
+
+.src-map-Map-module__customAttribution a {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-map-Map-module__customZoom button {
+    background-color: var(--gh-panel-solid) !important;
+    color: var(--gh-text-dim) !important;
+}
+
+.src-map-LocationButton-module__locationOnOff svg {
+    color: var(--gh-text-dim) !important;
+}
+
+/* context menu + popups */
+.src-layers-ContextMenu-module__contextMenu,
+.src-layers-DefaultMapPopup-module__popup,
+.src-layers-MapFeaturePopup-module__popup,
+.src-layers-MapFeaturePopup-module__poiPopup,
+.src-sidebar-search-PopUp-module__popup {
+    background-color: var(--gh-panel-solid) !important;
+    border: 1px solid var(--gh-panel-border) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 16px var(--gh-panel-glow) !important;
+    color: var(--gh-text) !important;
+}
+
+.src-layers-DefaultMapPopup-module__popup:after {
+    border-top-color: var(--gh-panel-solid) !important;
+}
+
+.src-layers-DefaultMapPopup-module__popup:before {
+    border-top-color: var(--gh-panel-border) !important;
+}
+
+.src-map-ContextMenuContent-module__entry {
+    color: var(--gh-text) !important;
+}
+
+.src-map-ContextMenuContent-module__entry:hover {
+    background-color: rgba(249, 38, 114, 0.1) !important;
+}
+
+.src-map-ContextMenuContent-module__entry:active {
+    background-color: rgba(249, 38, 114, 0.18) !important;
+}
+
+.src-map-ContextMenuContent-module__entry:disabled {
+    color: var(--gh-text-faint) !important;
+}
+
+.src-map-ContextMenuContent-module__entryWithDivider {
+    border-top-color: var(--gh-hairline);
+}
+
+.src-layers-MapFeaturePopup-module__poiPopup a {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-layers-MapFeaturePopup-module__poiPopup a:hover {
+    color: var(--gh-accent) !important;
+}
+
+.src-layers-MapFeaturePopup-module__poiPopupTable th,
+.src-layers-MapFeaturePopup-module__poiPopupTable td {
+    border-bottom-color: var(--gh-hairline);
+    color: var(--gh-text-dim) !important;
+}
+
+/* elevation widget */
+.src-pathDetails-elevationWidget-ElevationWidget-module__container {
+    background-color: var(--gh-panel) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--gh-panel-border) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 24px var(--gh-panel-glow) !important;
+}
+
+.src-pathDetails-elevationWidget-ElevationWidget-module__alternativeButton,
+.src-pathDetails-elevationWidget-ElevationWidget-module__expandButton,
+.src-pathDetails-elevationWidget-ElevationWidget-module__closeButton {
+    background: var(--gh-panel-solid) !important;
+    border-color: var(--gh-panel-border) !important;
+    color: var(--gh-text-dim) !important;
+}
+
+.src-pathDetails-elevationWidget-ElevationWidget-module__alternativeButton:hover,
+.src-pathDetails-elevationWidget-ElevationWidget-module__expandButton:hover,
+.src-pathDetails-elevationWidget-ElevationWidget-module__closeButton:hover {
+    background: rgba(249, 38, 114, 0.1) !important;
+    color: var(--gh-accent) !important;
+}
+
+.src-pathDetails-elevationWidget-ElevationWidget-module__alternativeNumber {
+    color: var(--gh-text-dim) !important;
+}
+
+/* elevation profile dropdown + legend, inline-styled by React but same-origin so we can still hit the <select> */
+.src-pathDetails-elevationWidget-ElevationWidget-module__controls select {
+    background: var(--gh-panel-solid) !important;
+    color: var(--gh-text) !important;
+    border-color: var(--gh-panel-border) !important;
+}
+
+/* custom model box (advanced settings) */
+.src-sidebar-CustomModelBox-module__customModelBox {
+    border-top-color: var(--gh-hairline);
+}
+
+.src-sidebar-CustomModelBox-module__customModelBoxBottomBar {
+    border-bottom-color: var(--gh-hairline);
+}
+
+.src-sidebar-CustomModelBox-module__examples {
+    background-color: var(--gh-panel-solid) !important;
+    color: var(--gh-accent) !important;
+    border-top-color: var(--gh-hairline);
+    border-right-color: var(--gh-hairline);
+}
+
+.src-sidebar-CustomModelBox-module__examples option {
+    background-color: var(--gh-panel-solid) !important;
+    color: var(--gh-accent) !important;
+}
+
+.src-sidebar-CustomModelBox-module__helpLink {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-CustomModelBox-module__helpLink:hover {
+    color: var(--gh-accent) !important;
+}
+
+/* code editor (custom model JSON) */
+.CodeMirror {
+    background: var(--gh-panel-solid) !important;
+    color: var(--gh-text) !important;
+}
+
+.CodeMirror-gutters {
+    background-color: var(--gh-panel-solid) !important;
+    border-right-color: var(--gh-hairline);
+}
+
+.CodeMirror-linenumber {
+    color: var(--gh-text-faint) !important;
+}
+
+/* mobile bottom-sheet sidebar */
+.src-sidebar-MobileSidebar-module__queryPointText {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-MobileSidebar-module__btnCloseInputs svg,
+.src-sidebar-MobileSidebar-module__btnOpenInputs svg {
+    color: var(--gh-text-dim) !important;
+}
+
+.src-sidebar-MobileSidebar-module__btnOpenContainer {
+    border-color: var(--gh-panel-border) !important;
+}
+
+/* scrollbars, for the dark chrome feel */
+.src-App-module__sidebarContent::-webkit-scrollbar,
+.src-sidebar-search-Search-module__searchBoxScrollable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.src-App-module__sidebarContent::-webkit-scrollbar-thumb,
+.src-sidebar-search-Search-module__searchBoxScrollable::-webkit-scrollbar-thumb {
+    background: rgba(249, 38, 114, 0.25) !important;
+    border-radius: 4px !important;
+}
+
+.src-App-module__sidebarContent::-webkit-scrollbar-track,
+.src-sidebar-search-Search-module__searchBoxScrollable::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+/* openlayers built-in controls (zoom, attribution, scale line) */
+:root,
+:host {
+    --ol-background-color: #0d1426 !important;
+    --ol-accent-background-color: #16213a !important;
+    --ol-subtle-background-color: rgba(13, 20, 38, 0.6) !important;
+    --ol-partial-background-color: rgba(13, 20, 38, 0.85) !important;
+    --ol-foreground-color: #e8f4ff !important;
+    --ol-subtle-foreground-color: #8fa3c4 !important;
+    --ol-brand-color: #f92672 !important;
+}

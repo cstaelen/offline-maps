@@ -3,7 +3,7 @@ const origin = typeof window !== 'undefined' ? window.location.origin : ''
 const config = {
     routingApi: origin + '/routing/',
     geocodingApi: origin + '/geocode/',
-    defaultTiles: 'Local',
+    defaultTiles: 'Local Dark',
     keys: {
         graphhopper: '',
         maptiler: 'missing_api_key',

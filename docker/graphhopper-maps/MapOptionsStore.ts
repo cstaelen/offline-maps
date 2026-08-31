@@ -47,7 +47,14 @@ const local: VectorStyle = {
     attribution: osmAttribution,
 }
 
-const styleOptions: StyleOption[] = [local]
+const localDark: VectorStyle = {
+    name: 'Local Dark',
+    type: 'vector',
+    url: window.location.origin + '/local-style-dark.json',
+    attribution: osmAttribution,
+}
+
+const styleOptions: StyleOption[] = [local, localDark]
 
 export default class MapOptionsStore extends Store<MapOptionsStoreState> {
     constructor() {
