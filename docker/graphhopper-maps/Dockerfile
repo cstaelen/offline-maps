@@ -11,6 +11,7 @@ COPY MapOptionsStore.ts ./src/stores/MapOptionsStore.ts
 COPY Api.ts ./src/api/Api.ts
 COPY UsePathsLayer.tsx ./src/layers/UsePathsLayer.tsx
 COPY UseQueryPointsLayer.tsx ./src/layers/UseQueryPointsLayer.tsx
+COPY QueryStore.ts ./src/stores/QueryStore.ts
 
 RUN npm ci
 RUN npm run build

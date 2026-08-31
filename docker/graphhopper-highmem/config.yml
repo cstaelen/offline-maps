@@ -97,7 +97,10 @@ graphhopper:
   # profile for which an LM profile exists. Important: This only will give correct routing results if the weights
   # calculated for the profile are equal or larger (for every edge) than those calculated for the profile that was used
   # for the preparation (`my_other_profile`)
-  profiles_lm: []
+  profiles_lm:
+    - profile: car
+    - profile: bike
+    - profile: foot
 
 
   #### Encoded Values ####
