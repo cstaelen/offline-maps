@@ -58,7 +58,10 @@ export default class Graphhopper extends MapstackService {
         await this.updateStatus("starting");
 
         launchProcess("graphhopper", "java", [
-            '-Xmx6g',
+            // 12g: first startup after enabling profiles_lm computes Landmarks for all profiles here (not
+            // during import), which needs much more headroom than just serving requests. LM prep results are
+            // cached to disk, so this is a one-time cost — safe to lower again once the cache is populated.
+            '-Xmx12g',
             `-Ddw.graphhopper.graph.location=${this.cache_dir}`,
             '-jar', process.env.GH_BINARY_PATH,
             'server', process.env.GH_CONFIG_PATH

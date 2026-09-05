@@ -386,6 +386,18 @@ body {
     color: var(--gh-text) !important;
 }
 
+/* turn arrow icons are a solid-color PNG (not an SVG we can recolor), so give them a
+   pill background + glow instead so they read clearly against the dark sidebar */
+.src-sidebar-instructions-Instructions-module__sign {
+    padding: 0.3rem !important;
+    box-sizing: content-box !important;
+    background: var(--gh-panel-solid) !important;
+    border: 1px solid var(--gh-panel-border) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 10px var(--gh-panel-glow) !important;
+    filter: invert(1) brightness(1.6) !important;
+}
+
 /* settings box */
 .src-sidebar-SettingsBox-module__parent {
     border-top-color: var(--gh-hairline);
