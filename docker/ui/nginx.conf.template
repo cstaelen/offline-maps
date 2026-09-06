@@ -1,0 +1,59 @@
+server {
+    listen 80;
+
+    # Docker's embedded DNS resolver. Required because the upstreams below are
+    # resolved from variables (env-provided URLs), not literal proxy_pass
+    # targets -- nginx only re-resolves variable-based hosts if a resolver is
+    # configured, which matters here since this container doesn't assume its
+    # backends are Docker service names at all (could be an external host,
+    # a different stack, HTTP or HTTPS).
+    resolver 127.0.0.11 valid=30s;
+
+    # nginx only forwards the client's original Host header automatically
+    # when proxy_pass targets a literal address. With a variable target (as
+    # below, since the upstream is env-provided), it must be set explicitly.
+    proxy_set_header Host $proxy_host;
+
+    location / {
+        root /usr/share/nginx/html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    # When proxy_pass's target is a variable, nginx does NOT strip the
+    # matched location prefix the way it does for a literal proxy_pass -- the
+    # request URI has to be forwarded explicitly via $request_uri, and the
+    # backend path built by hand to match what each location previously got
+    # via prefix-stripping (e.g. "/routing/info" -> "/routing/info" here,
+    # same as before, since GraphHopper's own gateway strips "/routing" itself).
+
+    location /routing/ {
+        set $graphhopper_upstream ${GRAPHHOPPER_URL};
+        proxy_pass $graphhopper_upstream$request_uri;
+    }
+
+    # graphhopper-maps hardcodes the "geocode" endpoint name; Photon exposes it as "api"
+    location /geocode/geocode {
+        set $photon_upstream ${PHOTON_URL};
+        proxy_pass $photon_upstream/geocode/api$is_args$args;
+    }
+
+    location /geocode/ {
+        set $photon_upstream ${PHOTON_URL};
+        proxy_pass $photon_upstream$request_uri;
+    }
+
+    location /tiles/ {
+        set $versatiles_upstream ${VERSATILES_URL};
+        proxy_pass $versatiles_upstream$request_uri;
+    }
+
+    location /sprites/ {
+        set $versatiles_upstream ${VERSATILES_URL};
+        proxy_pass $versatiles_upstream$request_uri;
+    }
+
+    location /fonts/ {
+        set $versatiles_upstream ${VERSATILES_URL};
+        proxy_pass $versatiles_upstream$request_uri;
+    }
+}
