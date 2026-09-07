@@ -30,9 +30,7 @@ services:
       - 9988:80
 
   mapstackui:
-    build:
-      context: .
-      dockerfile: docker/ui/Dockerfile
+    image: cstaelen/mapstackui
     ports:
       - 8889:80
     environment:

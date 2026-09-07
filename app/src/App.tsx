@@ -1,22 +1,22 @@
-import { useEffect } from 'react'
-import Map from './components/Map'
-import RouteLayer, { CLICKABLE_LAYER_IDS, useMapClickToAddPoint } from './components/RouteLayer'
-import SearchBox from './components/SearchBox'
-import RouteForm from './components/RouteForm'
-import RouteDetails from './components/RouteDetails'
-import RouteInstructions from './components/RouteInstructions'
-import ThemeToggle from './components/ThemeToggle'
-import GeolocateMarker from './components/GeolocateMarker'
-import GeolocateButton from './components/GeolocateButton'
-import { useThemeStore } from './store/useThemeStore'
+import { useEffect } from "react";
+import Map from "./components/Map";
+import RouteLayer, { CLICKABLE_LAYER_IDS, useMapClickToAddPoint } from "./components/RouteLayer";
+import SearchBox from "./components/SearchBox";
+import RouteForm from "./components/RouteForm";
+import RouteDetails from "./components/RouteDetails";
+import RouteInstructions from "./components/RouteInstructions";
+import ThemeToggle from "./components/ThemeToggle";
+import GeolocateMarker from "./components/GeolocateMarker";
+import GeolocateButton from "./components/GeolocateButton";
+import { useThemeStore } from "./store/useThemeStore";
 
 export default function App() {
-  const handleClick = useMapClickToAddPoint()
-  const theme = useThemeStore(s => s.theme)
+  const handleClick = useMapClickToAddPoint();
+  const theme = useThemeStore((s) => s.theme);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark')
-  }, [theme])
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   return (
     <div className="relative h-full overflow-auto">
@@ -27,19 +27,19 @@ export default function App() {
         </div>
         <div className="md:absolute w-full left-4 top-16 z-10 space-y-2">
           <RouteForm />
-          <RouteDetails />
           <RouteInstructions />
+          <RouteDetails />
         </div>
       </div>
       <div className="absolute bottom-[10px] right-[10px] md:top-[90px] z-10">
         <ThemeToggle />
       </div>
       <div className="relative h-[100vh]">
-      <Map onClick={handleClick} interactiveLayerIds={CLICKABLE_LAYER_IDS}>
-        <RouteLayer />
-        <GeolocateMarker />
-      </Map>
+        <Map onClick={handleClick} interactiveLayerIds={CLICKABLE_LAYER_IDS}>
+          <RouteLayer />
+          <GeolocateMarker />
+        </Map>
       </div>
     </div>
-  )
+  );
 }

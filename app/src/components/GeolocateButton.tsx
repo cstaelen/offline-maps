@@ -1,44 +1,44 @@
-import { LocateFixed } from 'lucide-react'
-import { useGeolocationStore } from '../store/useGeolocationStore'
-import { useRouteStore } from '../store/useRouteStore'
+import { LocateFixed } from "lucide-react";
+import { useGeolocationStore } from "../store/useGeolocationStore";
+import { useRouteStore } from "../store/useRouteStore";
 
 export default function GeolocateButton() {
-  const error = useGeolocationStore(s => s.error)
-  const setPosition = useGeolocationStore(s => s.setPosition)
-  const setError = useGeolocationStore(s => s.setError)
-  const setSinglePoint = useRouteStore(s => s.setSinglePoint)
+  const error = useGeolocationStore((s) => s.error);
+  const setPosition = useGeolocationStore((s) => s.setPosition);
+  const setError = useGeolocationStore((s) => s.setError);
+  const setSinglePoint = useRouteStore((s) => s.setSinglePoint);
 
   function handleClick() {
     if (!navigator.geolocation) {
-      setError('Géolocalisation non disponible sur ce navigateur')
-      return
+      setError("Géolocalisation non disponible sur ce navigateur");
+      return;
     }
     navigator.geolocation.getCurrentPosition(
-      pos => {
-        const coord: [number, number] = [pos.coords.longitude, pos.coords.latitude]
-        setPosition(coord)
+      (pos) => {
+        const coord: [number, number] = [pos.coords.longitude, pos.coords.latitude];
+        setPosition(coord);
         // Replaces any in-progress route with a single "My position" point,
         // rather than adding it as just another waypoint alongside whatever
         // was already there. RouteLayer (inside the map) reacts to the
         // resulting flyToCoord/points change -- this component doesn't need
         // its own map instance access.
-        setSinglePoint(coord, 'My position')
+        setSinglePoint(coord, "My position");
       },
-      err => {
+      (err) => {
         setError(
           err.code === err.PERMISSION_DENIED
-            ? 'Autorisation de géolocalisation refusée'
+            ? "Autorisation de géolocalisation refusée"
             : err.code === err.TIMEOUT
-              ? 'La localisation a pris trop de temps'
-              : 'Impossible de déterminer votre position',
-        )
+              ? "La localisation a pris trop de temps"
+              : "Impossible de déterminer votre position",
+        );
       },
       // A recentering button doesn't need a brand-new GPS fix on every click;
       // tolerating a recent one keeps repeat clicks fast. `timeout` ensures a
       // stuck request (ignored permission prompt, flaky hardware) surfaces an
       // error instead of leaving the button silently unresponsive forever.
       { maximumAge: 30000, timeout: 10000 },
-    )
+    );
   }
 
   return (
@@ -57,5 +57,5 @@ export default function GeolocateButton() {
         </p>
       )}
     </div>
-  )
+  );
 }

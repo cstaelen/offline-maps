@@ -1,4 +1,4 @@
-# Offline Maps - Mapstack UI
+# Offline Maps - Mapstack UI (work in progress)
 
 Self-hosted routing, geocoding, and map tiles stack (using [Mapstack](https://github.com/Coding-Kiwi/mapstack): GraphHopper + Photon + VersaTiles) with a modern ReactJS front-end.
 

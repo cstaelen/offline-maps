@@ -11,7 +11,7 @@ import {
   MapPin,
   HelpCircle,
   type LucideIcon,
-} from 'lucide-react'
+} from "lucide-react";
 
 // GraphHopper turn-instruction sign codes -> icon mapping. This is the
 // single source of truth for the sign value list (see the `sign` field
@@ -37,8 +37,8 @@ const SIGN_ICONS: Record<number, LucideIcon> = {
   6: RotateCw, // roundabout (check exit_number for which exit)
   7: ArrowUpRight, // keep right
   8: CornerDownRight, // U-turn right
-}
+};
 
 export function getDirectionIcon(sign: number): LucideIcon {
-  return SIGN_ICONS[sign] ?? HelpCircle
+  return SIGN_ICONS[sign] ?? HelpCircle;
 }
