@@ -19,13 +19,13 @@ export default function App() {
   }, [theme])
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full overflow-auto">
       <div className="dark:bg-monokai-surface relative z-10 flex flex-col gap-2 p-2 w-full md:w-80 md:p-0">
-        <div className="md:absolute left-4 top-4 z-12 flex items-start gap-2">
+        <div className="md:absolute w-full left-4 top-4 z-12 flex items-start gap-2 md:w-80">
           <SearchBox />
           <GeolocateButton />
         </div>
-        <div className="md:absolute left-4 top-16 z-10 space-y-2">
+        <div className="md:absolute w-full left-4 top-16 z-10 space-y-2">
           <RouteForm />
           <RouteDetails />
           <RouteInstructions />
@@ -34,10 +34,12 @@ export default function App() {
       <div className="absolute bottom-[10px] right-[10px] md:top-[90px] z-10">
         <ThemeToggle />
       </div>
+      <div className="relative h-[100vh]">
       <Map onClick={handleClick} interactiveLayerIds={CLICKABLE_LAYER_IDS}>
         <RouteLayer />
         <GeolocateMarker />
       </Map>
+      </div>
     </div>
   )
 }

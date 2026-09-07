@@ -14,8 +14,8 @@ services:
 
   graphhopper:
     # use "build:" instead of "image:" to increase memory heap
-    # build: ./docker/graphhopper
-    image: codingkiwi/mapstack-graphhopper:1
+    build: ./docker/graphhopper
+    # image: codingkiwi/mapstack-graphhopper:1
     volumes:
       - ./var/graphhopper/data:/app/graphhopper_data
       # - ./var/graphhopper/config.yml:/app/graphhopper/config.yml
