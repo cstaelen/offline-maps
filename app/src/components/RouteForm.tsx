@@ -4,11 +4,12 @@ import { SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-
 import { CSS } from "@dnd-kit/utilities";
 import { Car, Bike, PersonStanding, X, GripVertical } from "lucide-react";
 import { useRouteStore } from "../store/useRouteStore";
+import { formatDuration } from "../lib/formatDuration";
 
 const PROFILE_LABELS: Record<string, string> = {
-  car: "Voiture",
-  bike: "Vélo",
-  foot: "Marche",
+  car: "Car",
+  bike: "Bike",
+  foot: "Walk",
 };
 
 const PROFILE_ICONS: Record<string, JSX.Element> = {
@@ -29,7 +30,7 @@ function SortablePointItem({ id, children }: { id: string; children: React.React
         {...attributes}
         {...listeners}
         className="cursor-grab text-slate-400"
-        aria-label="Réordonner"
+        aria-label="Reorder"
       >
         <GripVertical className="h-4 w-4" aria-hidden="true" />
       </span>
@@ -68,14 +69,14 @@ export default function RouteForm() {
 
   return (
     <div className="w-full space-y-2 rounded-md border border-slate-200 bg-white p-3 text-sm shadow dark:border-monokai-border dark:bg-monokai-bg dark:text-monokai-text">
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-center">
         {availableProfiles.map((p) => (
           <button
             key={p}
             onClick={() => setProfile(p)}
             title={PROFILE_LABELS[p] ?? p}
             aria-label={PROFILE_LABELS[p] ?? p}
-            className={`flex items-center justify-center rounded px-2 py-1 text-xs font-medium ${
+            className={`flex items-center justify-center rounded px-6 py-1 text-xs font-medium ${
               p === profile
                 ? "bg-blue-600 text-white"
                 : "bg-slate-100 text-slate-700 dark:bg-monokai-surface dark:text-monokai-muted"
@@ -106,7 +107,7 @@ export default function RouteForm() {
                   <button
                     onClick={() => removePoint(point.id)}
                     className="text-slate-400 hover:text-red-600"
-                    aria-label="Supprimer"
+                    aria-label="Remove"
                   >
                     <X aria-hidden="true" className="h-4 w-4" />
                   </button>
@@ -117,30 +118,25 @@ export default function RouteForm() {
         </DndContext>
       )}
 
-      {status === "loading" && <p className="text-slate-500">Calcul de l'itinéraire…</p>}
+      {status === "loading" && <p className="text-slate-500">Calculating route…</p>}
       {status === "error" && errorMessage && (
         <p className="text-red-600 dark:text-monokai-pink">{errorMessage}</p>
       )}
-      {selectedPath && status !== "loading" && (
-        <p className="text-slate-600 dark:text-monokai-muted">
-          {(selectedPath.distance / 1000).toFixed(1)} km · {Math.round(selectedPath.time / 60000)}{" "}
-          min
-        </p>
-      )}
 
       {route && route.paths.length > 1 && (
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-col gap-1">
           {route.paths.map((path, i) => (
             <button
               key={i}
               onClick={() => selectPath(i)}
-              className={`rounded px-2 py-1 text-xs font-medium ${
+              className={`rounded px-2 py-1 text-md font-medium text-left ${
                 i === selectedPathIndex
                   ? "bg-blue-600 text-white"
                   : "bg-slate-100 text-slate-700 dark:bg-monokai-surface dark:text-monokai-muted"
               }`}
             >
-              {i === 0 ? "Principal" : `Alt. ${i}`} · {(path.distance / 1000).toFixed(1)} km
+              {i+1} · {(path.distance / 1000).toFixed(1)} km ·{" "}
+              {formatDuration(path.time)}
             </button>
           ))}
         </div>
@@ -151,7 +147,7 @@ export default function RouteForm() {
           onClick={clearPoints}
           className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-monokai-text"
         >
-          Tout effacer
+          Clear all
         </button>
       )}
     </div>

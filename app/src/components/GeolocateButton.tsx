@@ -10,7 +10,7 @@ export default function GeolocateButton() {
 
   function handleClick() {
     if (!navigator.geolocation) {
-      setError("Géolocalisation non disponible sur ce navigateur");
+      setError("Geolocation not available in this browser");
       return;
     }
     navigator.geolocation.getCurrentPosition(
@@ -27,10 +27,10 @@ export default function GeolocateButton() {
       (err) => {
         setError(
           err.code === err.PERMISSION_DENIED
-            ? "Autorisation de géolocalisation refusée"
+            ? "Geolocation permission denied"
             : err.code === err.TIMEOUT
-              ? "La localisation a pris trop de temps"
-              : "Impossible de déterminer votre position",
+              ? "Locating took too long"
+              : "Unable to determine your position",
         );
       },
       // A recentering button doesn't need a brand-new GPS fix on every click;
@@ -45,8 +45,8 @@ export default function GeolocateButton() {
     <div className="flex flex-col items-start gap-1">
       <button
         onClick={handleClick}
-        aria-label="Me localiser"
-        title="Me localiser"
+        aria-label="Locate me"
+        title="Locate me"
         className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-700 shadow hover:bg-slate-50 dark:border-monokai-border dark:bg-monokai-bg dark:text-monokai-text dark:hover:bg-monokai-surface"
       >
         <LocateFixed aria-hidden="true" className="h-5 w-5" />

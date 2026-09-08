@@ -2,3 +2,4 @@ var/
 node_modules/
 .DS_Store
 docs/
+docker-compose.override.yml

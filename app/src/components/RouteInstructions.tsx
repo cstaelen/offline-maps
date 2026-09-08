@@ -3,6 +3,7 @@ import { Download, ChevronDown, ChevronUp } from "lucide-react";
 import { useRouteStore } from "../store/useRouteStore";
 import { buildGpxUrl } from "../api/graphhopper";
 import { getDirectionIcon } from "../lib/directionIcons";
+import { formatDuration } from "../lib/formatDuration";
 
 const INCLINE_BUCKETS = [
   { label: ">10%", min: 10, max: Infinity, color: "#dc2626" },
@@ -71,22 +72,22 @@ export default function RouteInstructions() {
     <div className="w-full space-y-2 rounded-md border border-slate-200 bg-white p-3 text-sm shadow dark:border-monokai-border dark:bg-monokai-bg dark:text-monokai-text">
       <div className="flex items-center justify-between">
         <div>
-          <span className="font-medium">{Math.round(path.time / 60000)} min</span>
+          <span className="font-medium">{formatDuration(path.time)}</span>
           <span className="ml-2 text-slate-500">{(path.distance / 1000).toFixed(1)} km</span>
         </div>
         <div className="flex items-center gap-2">
           <a
             href={gpxUrl}
             className="flex items-center gap-1 rounded px-2 py-1 text-xs text-slate-500 hover:bg-slate-100 dark:hover:bg-monokai-surface"
-            aria-label="Télécharger au format GPX"
-            title="Télécharger au format GPX"
+            aria-label="Download as GPX"
+            title="Download as GPX"
           >
             <Download aria-hidden="true" className="h-4 w-4" />
             GPX
           </a>
           <button
             onClick={() => setCollapsed((c) => !c)}
-            aria-label={collapsed ? "Afficher les instructions" : "Cacher les instructions"}
+            aria-label={collapsed ? "Show instructions" : "Hide instructions"}
             className="text-slate-400 hover:text-slate-600 dark:hover:text-monokai-text"
           >
             {collapsed ? (

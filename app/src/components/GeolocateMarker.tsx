@@ -8,7 +8,7 @@ export default function GeolocateMarker() {
   return (
     <Marker longitude={position[0]} latitude={position[1]}>
       <div
-        title={stale ? "Dernière position connue (non confirmée)" : undefined}
+        title={stale ? "Last known position (unconfirmed)" : undefined}
         className={
           stale
             ? "h-4 w-4 rounded-full border-2 border-white bg-slate-400 opacity-60 shadow-[0_0_0_6px_rgba(148,163,184,0.3)]"

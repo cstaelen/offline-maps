@@ -38,7 +38,7 @@ services:
       - 8080:8080
 
   mapstackui:
-    image: cstaelen/mapstackui"
+    image: cstaelen/mapstackui:latest"
     ports:
       - 8889:80
     environment:

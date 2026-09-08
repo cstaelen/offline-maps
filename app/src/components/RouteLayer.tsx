@@ -27,8 +27,14 @@ export default function RouteLayer() {
   const movePoint = useRouteStore((s) => s.movePoint);
   const removePoint = useRouteStore((s) => s.removePoint);
   const selectedPathIndex = useRouteStore((s) => s.selectedPathIndex);
+  const hoveredInstructionInterval = useRouteStore((s) => s.hoveredInstructionInterval);
   const { current: map } = useMap();
   const selectedPath = route?.paths[selectedPathIndex];
+  const hoveredInstructionCoord = hoveredInstructionInterval
+    ? (selectedPath?.points.coordinates[hoveredInstructionInterval[0]] as
+        | [number, number]
+        | undefined)
+    : undefined;
 
   // Only auto-zoom when a new point was just added (likely off-screen) --
   // not when an existing point is nudged, reordered, or removed, where the
@@ -131,51 +137,18 @@ export default function RouteLayer() {
         </Marker>
       ))}
 
+      {hoveredInstructionCoord && (
+        <Marker longitude={hoveredInstructionCoord[0]} latitude={hoveredInstructionCoord[1]}>
+          <div className="h-3 w-3 rounded-full border-2 border-white bg-orange-500 shadow-[0_0_0_4px_rgba(249,115,22,0.35)]" />
+        </Marker>
+      )}
+
       {/* Glow effect: a wide, blurred, low-opacity line underneath the crisp
           line on top. MapLibre has no CSS-style glow filter for vector lines,
           so this is the standard way to fake one -- "line-blur" softens the
-          wide copy's edges into a halo instead of a hard-edged wider stripe. */}
-      {route && route.paths.length > 1 && (
-        <Source
-          id="route-alternatives"
-          type="geojson"
-          data={{
-            type: "FeatureCollection",
-            features: route.paths
-              .map((path, i) => ({
-                type: "Feature" as const,
-                id: i,
-                properties: { index: i },
-                geometry: path.points,
-              }))
-              .filter((f) => f.properties.index !== selectedPathIndex),
-          }}
-        >
-          <Layer
-            id="route-alternatives-glow"
-            type="line"
-            paint={{
-              "line-color": altLineColor,
-              // Widen and brighten the hovered alternative's halo so it reads
-              // as "clickable" before the user commits to the click.
-              "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 14, 10],
-              "line-blur": 6,
-              "line-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.7, 0.5],
-            }}
-          />
-          {/* Kept as the click target (CLICKABLE_LAYER_IDS below) since it's
-              the narrower, more precisely-hit layer of the pair. */}
-          <Layer
-            id="route-alternatives-line"
-            type="line"
-            paint={{
-              "line-color": altLineColor,
-              "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 5, 4],
-            }}
-          />
-        </Source>
-      )}
-
+          wide copy's edges into a halo instead of a hard-edged wider stripe.
+          Mounted before route-alternatives below so route-glow always exists
+          by the time the alternatives' beforeId references it. */}
       {selectedPath && (
         <Source
           id="route"
@@ -196,6 +169,55 @@ export default function RouteLayer() {
             id="route-line"
             type="line"
             paint={{ "line-color": routeLineColor, "line-width": 5 }}
+          />
+        </Source>
+      )}
+
+      {route && route.paths.length > 1 && (
+        <Source
+          id="route-alternatives"
+          type="geojson"
+          data={{
+            type: "FeatureCollection",
+            features: route.paths
+              .map((path, i) => ({
+                type: "Feature" as const,
+                id: i,
+                properties: { index: i },
+                geometry: path.points,
+              }))
+              .filter((f) => f.properties.index !== selectedPathIndex),
+          }}
+        >
+          {/* beforeId pins both alternative layers below the selected
+              route's layers regardless of mount/remount order across
+              re-renders -- without it, whichever <Source> MapLibre
+              (re)attaches last wins the top z-position, so the alternatives
+              could end up drawn over the selected route after a route
+              change. */}
+          <Layer
+            id="route-alternatives-glow"
+            type="line"
+            beforeId="route-glow"
+            paint={{
+              "line-color": altLineColor,
+              // Widen and brighten the hovered alternative's halo so it reads
+              // as "clickable" before the user commits to the click.
+              "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 14, 10],
+              "line-blur": 6,
+              "line-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.7, 0.5],
+            }}
+          />
+          {/* Kept as the click target (CLICKABLE_LAYER_IDS below) since it's
+              the narrower, more precisely-hit layer of the pair. */}
+          <Layer
+            id="route-alternatives-line"
+            type="line"
+            beforeId="route-glow"
+            paint={{
+              "line-color": altLineColor,
+              "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 5, 4],
+            }}
           />
         </Source>
       )}

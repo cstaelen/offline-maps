@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Maximize2, Minimize2 } from "lucide-react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -30,19 +31,44 @@ function haversineMeters(a: [number, number], b: [number, number]): number {
 }
 
 const METRIC_LABELS: Record<string, string> = {
-  elevation: "Élévation",
-  country: "Pays",
-  road_class: "Classe de route",
-  road_environment: "Environnement",
-  road_access: "Accès",
-  max_speed: "Vitesse max",
-  surface: "Revêtement",
-  smoothness: "État de la route",
-  roundabout: "Rond-point",
+  elevation: "Elevation",
+  country: "Country",
+  road_class: "Road class",
+  road_environment: "Environment",
+  road_access: "Access",
+  max_speed: "Max speed",
+  surface: "Surface",
+  smoothness: "Road condition",
+  roundabout: "Roundabout",
 };
 
 function labelFor(name: string): string {
   return METRIC_LABELS[name] ?? name.replace(/_/g, " ");
+}
+
+function formatMetricValue(value: string | number | boolean | null | undefined): string {
+  if (value === null || value === undefined) return "Unspecified";
+  return String(value);
+}
+
+function ChartTooltip({
+  active,
+  label,
+  value,
+}: {
+  active?: boolean;
+  label?: string | number;
+  value?: string;
+}) {
+  if (!active) return null;
+  return (
+    <div className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs shadow-md dark:border-monokai-border dark:bg-monokai-bg">
+      <p className="font-medium text-slate-900 dark:text-monokai-text">{value}</p>
+      <p className="text-slate-400 dark:text-monokai-muted">
+        {typeof label === "number" ? `${label.toFixed(1)} km` : label}
+      </p>
+    </div>
+  );
 }
 
 export default function RouteDetails() {
@@ -50,6 +76,16 @@ export default function RouteDetails() {
   const selectedPathIndex = useRouteStore((s) => s.selectedPathIndex);
   const path = route?.paths[selectedPathIndex];
   const [selectedMetric, setSelectedMetric] = useState("elevation");
+  const [expanded, setExpanded] = useState(false);
+  const [expandedTop, setExpandedTop] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  function toggleExpanded() {
+    if (!expanded && containerRef.current) {
+      setExpandedTop(containerRef.current.getBoundingClientRect().top);
+    }
+    setExpanded((e) => !e);
+  }
 
   const chartData = useMemo(() => {
     if (!path) return null;
@@ -90,21 +126,25 @@ export default function RouteDetails() {
     [chartData],
   );
 
-  const overlays = useMemo(() => {
+  const metricRanges = useMemo(() => {
     if (!path || !chartData || !activeMetric || selectedMetric === "elevation") return [];
     const segments = path.details[selectedMetric];
-    const ranges = segmentsToDistanceRanges(segments, chartData.cumulativeDistances);
+    return segmentsToDistanceRanges(segments, chartData.cumulativeDistances);
+  }, [path, chartData, activeMetric, selectedMetric]);
+
+  const overlays = useMemo(() => {
+    if (!activeMetric || selectedMetric === "elevation") return [];
     let colored: Array<{ startKm: number; endKm: number; color: string }>;
     if (activeMetric.kind === "numeric") {
       const nums = activeMetric.distinctValues.filter((v): v is number => typeof v === "number");
       const { min, max } = minMax(nums);
-      colored = ranges.map((r) => ({
+      colored = metricRanges.map((r) => ({
         startKm: r.startKm,
         endKm: r.endKm,
         color: typeof r.value === "number" ? numericColor(r.value, min, max) : "#94a3b8",
       }));
     } else {
-      colored = ranges.map((r) => ({
+      colored = metricRanges.map((r) => ({
         startKm: r.startKm,
         endKm: r.endKm,
         color: colorForValue(r.value),
@@ -112,13 +152,24 @@ export default function RouteDetails() {
     }
 
     return mergeAdjacentRanges(colored);
-  }, [path, chartData, activeMetric, selectedMetric]);
+  }, [metricRanges, activeMetric, selectedMetric]);
+
+  function valueAtKm(km: number): string | number | boolean | null | undefined {
+    const range = metricRanges.find((r) => km >= r.startKm && km <= r.endKm);
+    return range?.value;
+  }
 
   if (!path || !chartData || !eleMinMax) return null;
   const { min: minEle, max: maxEle } = eleMinMax;
 
   return (
-    <div className="w-full space-y-2 rounded-md border border-slate-200 bg-white p-3 text-sm shadow dark:border-monokai-border dark:bg-monokai-bg dark:text-monokai-text">
+    <div
+      ref={containerRef}
+      style={expanded ? { top: expandedTop } : undefined}
+      className={`space-y-2 rounded-md border border-slate-200 bg-white p-3 text-sm shadow dark:border-monokai-border dark:bg-monokai-bg dark:text-monokai-text ${
+        expanded ? "fixed inset-x-4 z-40 md:inset-x-8" : "w-full"
+      }`}
+    >
       <div className="flex items-center justify-between">
         <select
           value={selectedMetric}
@@ -131,9 +182,23 @@ export default function RouteDetails() {
             </option>
           ))}
         </select>
-        <span className="text-xs text-slate-400">
-          {chartData.totalKm.toFixed(1)} km · {Math.round(minEle)}–{Math.round(maxEle)} m
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-slate-400">
+            {chartData.totalKm.toFixed(1)} km · {Math.round(minEle)}–{Math.round(maxEle)} m
+          </span>
+          <button
+            onClick={toggleExpanded}
+            aria-label={expanded ? "Collapse panel" : "Expand panel"}
+            title={expanded ? "Collapse panel" : "Expand panel"}
+            className="text-slate-400 hover:text-slate-600 dark:hover:text-monokai-text"
+          >
+            {expanded ? (
+              <Minimize2 aria-hidden="true" className="h-4 w-4" />
+            ) : (
+              <Maximize2 aria-hidden="true" className="h-4 w-4" />
+            )}
+          </button>
+        </div>
       </div>
 
       <ResponsiveContainer width="100%" height={100}>
@@ -141,8 +206,15 @@ export default function RouteDetails() {
           <XAxis dataKey="km" tickFormatter={(v) => `${v.toFixed(0)}`} fontSize={10} />
           <YAxis domain={["dataMin - 5", "dataMax + 5"]} fontSize={10} width={30} />
           <Tooltip
-            formatter={(value) => [`${Math.round(Number(value))} m`, "Altitude"]}
-            labelFormatter={(v) => `${Number(v).toFixed(1)} km`}
+            cursor={{ stroke: "currentColor", strokeOpacity: 0.3 }}
+            content={({ active, label, payload }) => {
+              const km = payload?.[0]?.payload?.km;
+              const value =
+                selectedMetric === "elevation"
+                  ? `${Math.round(Number(payload?.[0]?.value))} m`
+                  : formatMetricValue(valueAtKm(Number(km)));
+              return <ChartTooltip active={active} label={label} value={value} />;
+            }}
           />
           <Area type="monotone" dataKey="ele" stroke="#2563eb" fill="#2563eb" fillOpacity={0.15} />
           {overlays.map((o, i) => (
@@ -166,7 +238,7 @@ export default function RouteDetails() {
                 className="h-2 w-2 rounded-full"
                 style={{ backgroundColor: colorForValue(v) }}
               />
-              {v === null ? "Non renseigné" : String(v)}
+              {v === null ? "Unspecified" : String(v)}
             </span>
           ))}
         </div>
