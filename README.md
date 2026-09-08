@@ -2,6 +2,8 @@
 
 Self-hosted routing, geocoding, and map tiles stack (using [Mapstack](https://github.com/Coding-Kiwi/mapstack): GraphHopper + Photon + VersaTiles) with a modern ReactJS front-end.
 
+<img src="https://github.com/cstaelen/offline-maps/blob/main/.github/left_halves_combined.png?raw=true" />
+
 ## Install
 
 Create a new `docker-compose.yml` :
@@ -71,7 +73,8 @@ docker compose up -d
 
 ## UI
 
-- Web: http://localhost:8889
+- Web public: http://localhost:8889
+- Web admin (map import): http://localhost:8080
 
 ## Maps config (elevation, ...)
 
@@ -99,3 +102,7 @@ one of these, force a re-import:
 4. Re-trigger the country deployment from http://localhost:8080/admin
 
 Anything else (e.g. `routing.timeout_ms`) just needs `docker compose restart graphhopper`.
+
+## Credits : 
+- [MapStack](https://github.com/Coding-Kiwi/mapstack) project
+
